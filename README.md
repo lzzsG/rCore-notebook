@@ -7,7 +7,7 @@
 
 ## 如何使用
 
-要在本地构建和预览书籍，请确保已安装 [Rust](https://www.rust-lang.org/) 和 mdBook。然后，克隆此仓库并运行以下命令：
+要在本地构建和预览书籍, 请确保已安装 [Rust](https://www.rust-lang.org/) 和 mdBook。然后，克隆此仓库并运行以下命令：
 
 ```
 clone https://github.com/your-username/your-repo-name.git
