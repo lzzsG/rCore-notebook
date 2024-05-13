@@ -1,12 +1,14 @@
 # Summary
 
-- [介绍](./介绍.md)
-- [Lib OS](./LibOS.md)
+[介绍](./介绍.md)
+- [第一讲 操作系统概述]()
+  - [lab0](ch1-operating-system-overview/lab0.md)
+- [ 第二讲 实践裸机程序 LibOS](./LibOS.md)
+  - [lab1](ch2-hands-on-bare-metal-program/lab1.md)
 - [第三讲 基于特权级的隔离与批处理]()
   - [第一节 从OS角度看计算机系统](ch3-isolation-batch-processing/L01.md)
   - [第二节 从OS角度看RISC-V](ch3-isolation-batch-processing/L02.md)
   - [第三节 实践：批处理操作系统](ch3-isolation-batch-processing/L03.md)
-
 - [第四讲 多道程序与分时多任务]()
   - [第一节 进程和进程模型](ch4-multiprogramming-time-sharing/L01.md)
   - [第二节 实践：多道程序与分时多任务操作系统](ch4-multiprogramming-time-sharing/L02.md)

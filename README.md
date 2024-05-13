@@ -55,8 +55,8 @@ mdBook 非常适合创建如编程语言文档、软件使用手册和教程等�
 
 要了解更多关于 mdBook 的信息，包括如何安装、使用和配置 mdBook，你可以访问以下资源：
 
-- **GitHub 仓库**：https://github.com/rust-lang/mdBook
-- **官方文档**：https://rust-lang.github.io/mdBook/
+- **GitHub 仓库**：<https://github.com/rust-lang/mdBook>
+- **官方文档**：<https://rust-lang.github.io/mdBook/>
 
 这些资源提供了丰富的指南和示例，帮助你开始使用 mdBook 来创建和发布你自己的在线书籍。
 
