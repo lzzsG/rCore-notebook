@@ -30,9 +30,39 @@
 
 ## macOS 用户的配置
 
-> macOS用户可以在本地直接配置所需的开发环境。具体的配置步骤和教程可以参考以下文章：[在 macOS 14 (M1 Pro) 编译 QEMU 7.0.0 - Nelson's Note](https://chatgpt.com/c/68dbba5d-1182-4cb9-b129-4398e68a7f36#)。
+> macOS用户可以在本地直接配置所需的开发环境。具体的配置步骤和教程可以参考以下文章：[在 macOS 14 (M1 Pro) 编译 QEMU 7.0.0 - Nelson's Note](https://note.bosswnx.xyz/compile-qemu-on-macos/)。
 >
 > - **M系列芯片的Mac用户**：如果是使用Apple的M系列芯片的Mac用户，并希望通过虚拟机安装Ubuntu，需要特别注意选择ARM架构的Ubuntu版本。[官网](http://old-releases.ubuntu.com/releases/focal/)主要提供的是ARM架构的Server版本 [ubuntu-20.04.4-live-server-arm64.iso](http://old-releases.ubuntu.com/releases/focal/ubuntu-20.04.4-live-server-arm64.iso)，用户如果有需求可以在此基础上安装桌面环境。具体的安装桌面环境步骤，可以参考下面的文章：[mac pro M1(ARM)安装：ubuntu虚拟机（四）](https://blog.csdn.net/qq_24950043/article/details/123764210)。
+>
+> ---
+>
+> ### QEMU 系统仿真（System Mode）
+>
+> - `xxx-softmmu`：编译生成 `qemu-system-xxx`，用于 xxx 架构的系统仿真。
+>- **功能**：模拟一个完整的基于不同 CPU 的硬件系统，包括处理器、内存及其他外部设备，支持运行完整的操作系统。
+>   - **应用场景**：适用于需要模拟整个操作系统的场景，例如开发和测试嵌入式系统、操作系统内核等。
+> - Mac中![image-20240514143535893](./assets/image-20240514143535893.png)
+>
+> ### QEMU 用户模式仿真（User Mode）
+>
+> - `xxx-linux-user`：编译生成 `qemu-xxx`，用于在 xxx 架构中运行用户应用程序。
+>  - **功能**：在开发主机上运行为目标架构编译的用户态应用程序，而不需要模拟整个操作系统。
+>   - **应用场景**：适用于需要在不同架构上运行用户态程序的场景，例如测试跨平台应用程序。
+>   - Linux中![image-20240514143817626](./assets/image-20240514143817626.png)
+>
+> ### 关联和独立性
+>
+> - **独立性**：`qemu-system-xxx` 和 `qemu-xxx` 是独立的二进制文件，分别用于系统仿真和用户模式仿真。你可以独立地使用它们中的任何一个，具体取决于你的需求。
+> - **关联性**：两者都源自同一个 QEMU 项目，因此在某些情况下，二者可能共享部分内部代码和机制。但是，系统仿真和用户模式仿真有着不同的用途和实现细节，它们各自处理的环境和需求也不同。
+>
+> ### 适用场景
+>
+> - **系统仿真（`qemu-system-xxx`）**：
+>   - 需要模拟完整操作系统的功能。
+>   - 适用于内核开发、操作系统调试、嵌入式系统仿真等。
+> - **用户模式仿真（`qemu-xxx`）**：
+>   - 仅需要在不同架构上运行用户态程序，不需要模拟完整操作系统。
+>   - 适用于跨平台应用程序开发和测试。
 
 ## Rust 开发环境配置
 
@@ -213,37 +243,7 @@ LOG=DEBUG make run
 
 如果你的环境配置正确，你应当会看到如下输出：
 
-```
-[rustsbi] RustSBI version 0.3.0-alpha.4, adapting to RISC-V SBI v1.0.0
-.______       __    __      _______.___________.  _______..______   __
-|   _  \     |  |  |  |    /       |           | /       ||   _  \ |  |
-|  |_)  |    |  |  |  |   |   (----`---|  |----`|   (----`|  |_)  ||  |
-|      /     |  |  |  |    \   \       |  |      \   \    |   _  < |  |
-|  |\  \----.|  `--'  |.----)   |      |  |  .----)   |   |  |_)  ||  |
-| _| `._____| \______/ |_______/       |__|  |_______/    |______/ |__|
-[rustsbi] Implementation     : RustSBI-QEMU Version 0.2.0-alpha.2
-[rustsbi] Platform Name      : riscv-virtio,qemu
-[rustsbi] Platform SMP       : 1
-[rustsbi] Platform Memory    : 0x80000000..0x88000000
-[rustsbi] Boot HART          : 0
-[rustsbi] Device Tree Region : 0x87e00000..0x87e00f85
-[rustsbi] Firmware Address   : 0x80000000
-[rustsbi] Supervisor Address : 0x80200000
-[rustsbi] pmp01: 0x00000000..0x80000000 (-wr)
-[rustsbi] pmp02: 0x80000000..0x80200000 (---)
-[rustsbi] pmp03: 0x80200000..0x88000000 (xwr)
-[rustsbi] pmp04: 0x88000000..0x00000000 (-wr)
-[kernel] Hello, world!
-[DEBUG] [kernel] .rodata [0x80203000, 0x80205000)
-[ INFO] [kernel] .data [0x80205000, 0x80206000)
-[ WARN] [kernel] boot_stack top=bottom=0x80216000, lower_bound=0x80206000
-[ERROR] [kernel] .bss [0x80216000, 0x80217000)
-```
-
-- <span style="color:green">[DEBUG] [kernel] .rodata [0x80203000, 0x80205000)</span>
-- <span style="color:purple">[ INFO] [kernel] .data [0x80205000, 0x80206000)</span>
-- <span style="color:yellow">[ WARN] [kernel] boot_stack top=bottom=0x80216000, lower_bound=0x80206000</span>
-- <span style="color:red">[ERROR] [kernel] .bss [0x80216000, 0x80217000)</span>
+![image-20240514172925870](./assets/image-20240514172925870.png)
 
 通常 rCore 会自动关闭 Qemu 。**如果在某些情况下需要强制结束，可以先按下 `Ctrl+A` ，再按下 `X` 来退出 Qemu。**
 
