@@ -1,6 +1,6 @@
 # Summary
 
-[介绍](./0-Introduction.md)
+[【介绍】](./0-Introduction.md)
 
 [【slide讲解】An Introduction to RISC-V Boot Flow](./0-An-Introduction-to-RISC-V-Boot-Flow.md)
 [【翻译】RISC-V SBI and the full boot process](./0-RISC-V-SBI-and-the-full-boot-process.md)
