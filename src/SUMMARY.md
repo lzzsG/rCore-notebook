@@ -1,6 +1,11 @@
 # Summary
 
 [介绍](./介绍.md)
+
+[【slide讲解】An Introduction to RISC-V Boot Flow](./An-Introduction-to-RISC-V-Boot-Flow.md)
+[【翻译】RISC-V SBI and the full boot process](./RISC-V-SBI-and-the-full-boot-process.md)
+[【翻译】Bare metal programming with RISC-V guide](Bare-metal-programming-with-RISC-V-guide)
+
 - [第一讲 操作系统概述]()
   - [Lab0](ch1-operating-system-overview/lab0.md)
 - [ 第二讲 实践裸机程序 LibOS](./LibOS.md)
