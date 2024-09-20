@@ -1,0 +1,4 @@
+# RESTART XV6TYPE
+
+---
+
