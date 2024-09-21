@@ -3,8 +3,13 @@
 [【介绍】](./0-Introduction.md)
 
 [【slide讲解】An Introduction to RISC-V Boot Flow](./0-An-Introduction-to-RISC-V-Boot-Flow.md)
-[【翻译】RISC-V SBI and the full boot process](./0-RISC-V-SBI-and-the-full-boot-process.md)
-[【翻译】Bare metal programming with RISC-V guide](./0-Bare-metal-programming-with-RISC-V-guide.md)
+[【中文翻译】RISC-V SBI and the full boot process](./0-RISC-V-SBI-and-the-full-boot-process.md)
+[【中文翻译】Bare metal programming with RISC-V guide](./0-Bare-metal-programming-with-RISC-V-guide.md)
+[【slide讲解】RISC-V Privileged Architecture](./0-RISC-V-Privileged-Architecture.md)
+
+
+
+
 
 - [第一讲 操作系统概述]()
   - [Lab0](ch1-operating-system-overview/lab0.md)
