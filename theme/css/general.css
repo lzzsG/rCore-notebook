@@ -70,18 +70,18 @@ h6 code {
 
 h2,
 h3 {
-    margin-block-start: 2.5em;
+    margin-block-start: 2em;
 }
 
 h4,
 h5 {
-    margin-block-start: 2em;
+    margin-block-start: 0.5em;
 }
 
 .header+.header h3,
 .header+.header h4,
 .header+.header h5 {
-    margin-block-start: 1em;
+    margin-block-start: 0.5em;
 }
 
 h1:target::before,
