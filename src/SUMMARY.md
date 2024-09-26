@@ -6,15 +6,16 @@
 [【中文翻译】RISC-V SBI and the full boot process](./0-RISC-V-SBI-and-the-full-boot-process.md)
 [【中文翻译】Bare metal programming with RISC-V guide](./0-Bare-metal-programming-with-RISC-V-guide.md)
 [【slide讲解】RISC-V Privileged Architecture](./0-RISC-V-Privileged-Architecture.md)
+[内核与应用程序的接口](RE/0.START.md)
+[hello_world.rs——从 println! 宏到底层的输出实现](RE/1.helloWorld.md)
 
-
-
-
+[L02 第二课](ch2-hands-on-bare-metal-program/L02.md)
+[---下面是早期内容---]()
 
 - [第一讲 操作系统概述]()
   - [Lab0](ch1-operating-system-overview/lab0.md)
-- [ 第二讲 实践裸机程序 LibOS](ch2-hands-on-bare-metal-program/ch2-LibOS.md)
-  - [L02](ch2-hands-on-bare-metal-program/L02.md)
+- [第二讲 实践裸机程序 LibOS](ch2-hands-on-bare-metal-program/ch2-LibOS.md)
+
   - [Lab1](ch2-hands-on-bare-metal-program/lab1.md)
 - [第三讲 基于特权级的隔离与批处理]()
   - [第一节 从OS角度看计算机系统](ch3-isolation-batch-processing/L01.md)
@@ -29,5 +30,3 @@
   - [第一节 地址空间](ch5-physical-memory-management/L01.md)
   - [第二节 内存分配](ch5-physical-memory-management/L02.md)
   - [第三节 实践：建立地址空间的OS](ch5-physical-memory-management/L03.md)
-- [RESTART XV6TYPE](RE/0.START.md)
-- [helloWoeld](RE/1.helloWorld.md)
