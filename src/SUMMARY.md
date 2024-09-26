@@ -9,6 +9,8 @@
 [内核与应用程序的接口](RE/0.START.md)
 [hello_world.rs——从 println! 宏到底层的输出实现](RE/1.helloWorld.md)
 
+[GDB安装](./0-GDB-install.md)
+
 [L02 第二课](ch2-hands-on-bare-metal-program/L02.md)
 [---下面是早期内容---]()
 
