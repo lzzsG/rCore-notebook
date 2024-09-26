@@ -11,6 +11,8 @@
 
 [GDB安装](./0-GDB-install.md)
 
+[GDB使用](./0-GDB-use.md)
+
 [L02 第二课](ch2-hands-on-bare-metal-program/L02.md)
 [---下面是早期内容---]()
 
