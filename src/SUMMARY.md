@@ -13,6 +13,8 @@
 
 [GDB使用](./0-GDB-use.md)
 
+[riscv64-unknown-elf-gdb和QEMU](./0-riscv64-unknown-elf-gdb-and-qemu.md)
+
 [L02 第二课](ch2-hands-on-bare-metal-program/L02.md)
 [---下面是早期内容---]()
 
