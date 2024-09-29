@@ -8,14 +8,12 @@
 [【slide讲解】RISC-V Privileged Architecture](./0-RISC-V-Privileged-Architecture.md)
 [内核与应用程序的接口](RE/0.START.md)
 [hello_world.rs——从 println! 宏到底层的输出实现](RE/1.helloWorld.md)
-
-[GDB安装](./0-GDB-install.md)
-
-[GDB使用](./0-GDB-use.md)
+	- [GDB安装](./0-GDB-install.md)
+	- [GDB使用](./0-GDB-use.md)
 
 [riscv64-unknown-elf-gdb和QEMU](./0-riscv64-unknown-elf-gdb-and-qemu.md)
 
-[L02 第二课](ch2-hands-on-bare-metal-program/L02.md)
+- [L02 第二课](ch2-hands-on-bare-metal-program/L02.md)
 [---下面是早期内容---]()
 
 - [第一讲 操作系统概述]()
