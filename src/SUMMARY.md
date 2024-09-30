@@ -40,7 +40,7 @@
 
 [3. RISC-V: Makefile 与 GDB/QEMU 调试 (C 语言)](./0-Makefile3.md)
 
-[4. RISC-V: Makefile 与 GDB/QEMU 调试 (Rust 语言)](./0-Makefile3.md)
+[4. RISC-V: Makefile 与 GDB/QEMU 调试 (Rust 语言)](./0-Makefile4.md)
 
 ---
 
