@@ -7,47 +7,51 @@
 
 [--- 相关资源 ---]()
 
-[相关参考阅读](./0-read-before.md)
-[1.【slide讲解】An Introduction to RISC-V Boot Flow](./0-An-Introduction-to-RISC-V-Boot-Flow.md)
-[2.【中文翻译】RISC-V SBI and the full boot process](./0-RISC-V-SBI-and-the-full-boot-process.md)
-[3.【中文翻译】Bare metal programming with RISC-V guide](./0-Bare-metal-programming-with-RISC-V-guide.md)
-[4.【slide讲解】RISC-V Privileged Architecture](./0-RISC-V-Privileged-Architecture.md)
+[相关参考阅读](Read/read-before.md)
+[1. An Introduction to RISC-V Boot Flow](Read/An-Introduction-to-RISC-V-Boot-Flow.md)
+[2. RISC-V SBI and the full boot process](Read/RISC-V-SBI-and-the-full-boot-process.md)
+[3. Bare metal programming with RISC-V guide](Read/Bare-metal-programming-with-RISC-V-guide.md)
+[4. RISC-V Privileged Architecture](Read/RISC-V-Privileged-Architecture.md)
 
 ---
 
 [--- 引入 ---]()
-[1. 内核与应用程序的接口](RE/0.START.md)
-[2. hello_world.rs——从 println! 宏到底层的输出实现](RE/1.helloWorld.md)
+[1. 内核与应用程序的接口](Intro/Kernel-application-interface.md)
+[2. hello_world.rs——从 println! 宏到底层的输出实现](Intro/helloWorld.rs.md)
 
 ---
 
 [--- GDB ---]()
 
-[GDB章节](./0-GDB.md)
-[1. GDB 简介与安装](./0-GDB-install.md)
-[2. GDB 使用 (C 语言)](./0-GDB-use.md)
-[3. RISC-V: 使用 GDB 和 QEMU 调试 (C 语言)](./0-riscv64-unknown-elf-gdb-and-qemu.md)
+[GDB章节](GDB/GDB.md)
+[1. GDB 简介与安装](GDB/GDB-install.md)
+[2. GDB 使用 (C 语言)](GDB/GDB-use.md)
+[3. RISC-V: 使用 GDB 和 QEMU 调试 (C 语言)](GDB/riscv64-unknown-elf-gdb-and-qemu.md)
 
-[4. RISC-V: 使用 GDB 和 QEMU 调试 (Rust 语言)](./0-riscv64-unknown-elf-gdb-and-qemu.md)
+[4. GDB 使用 (Rust 语言 rust-gdb)](GDB/GDB-use-rust-gdb.md)
+
+[5. RISC-V: 使用 GDB 和 QEMU 调试 (Rust 语言)](GDB/riscv64-unknown-elf-gdb-and-qemu-Rust.md)
 
 ---
 
 [--- Makefile ---]()
 
-[1. Makefile 入门](./0-Makefile.md)
+[Makefile 章节](Makefile/Makefile.md)
 
-[2. Makefile 基本示例](./0-Makefile2.md)
+[1. Makefile 入门](Makefile/Start-Makefile.md)
 
-[3. RISC-V: Makefile 与 GDB/QEMU 调试 (C 语言)](./0-Makefile3.md)
+[2. Makefile 基本示例](Makefile/Makefile-basic-example.md)
 
-[4. RISC-V: Makefile 与 GDB/QEMU 调试 (Rust 语言)](./0-Makefile4.md)
+[3. RISC-V: Makefile 与 GDB/QEMU 调试 (C 语言)](Makefile/RISC-V-GDB-QEMU-C.md)
+
+[4. RISC-V: Makefile 与 GDB/QEMU 调试 (Rust 语言)](Makefile/RISC-V-GDB-QEMU-Rust.md)
 
 ---
 
 [THU Operating Systems Spring22]()
 
-
 [L02 第二课](ch2-hands-on-bare-metal-program/L02.md)
+
 - [第一讲 操作系统概述](ch1-operating-system-overview/lab0.md)
   - [Lab0](ch1-operating-system-overview/lab0.md)
 - [第二讲 实践裸机程序 LibOS](ch2-hands-on-bare-metal-program/ch2-LibOS.md)
