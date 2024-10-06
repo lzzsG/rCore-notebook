@@ -445,7 +445,7 @@ Rust 标准库是一个为开发者设计的高层次抽象 API，通过对底�
 
 在裸机编程中，我们可以通过实现 `core::fmt::Write` 特性来创建一个`println!` 宏。以下是一个简化版的实现。
 
-参见[hello_world.rs](https://lzzs.fun/rCore-notebook/RE/1.helloWorld.html#hello_worldrs)。
+参见[hello_world.rs](https://lzzs.fun/rCore-notebook/Intro/helloWorld.rs.html)。
 
 ### 示例代码
 

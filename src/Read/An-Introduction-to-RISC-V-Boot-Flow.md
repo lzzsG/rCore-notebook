@@ -61,7 +61,7 @@
 
 2. **下载交叉编译工具链**  
    RISC-V的开发通常需要使用交叉编译工具链来编译代码，工具链可从以下链接下载：
-   
+
    [https://toolchains.bootlin.com/releases_riscv64.html](https://toolchains.bootlin.com/releases_riscv64.html)
 
 3. **下载预构建的镜像**  
@@ -87,7 +87,7 @@
 
 ## Common boot flow
 
-![QQ_1726542406151](./assets/QQ_1726542406151.png)
+![QQ_1726542406151](../assets/QQ_1726542406151.png)
 
 在嵌入式系统中，启动过程通常分为多个阶段，每个阶段的功能和执行环境不同。常见的启动流程包括以下几个阶段：
 
@@ -121,13 +121,13 @@
 
 ## Common boot flow in ARM64
 
-![QQ_1726542613461](./assets/QQ_1726542613461.png)
+![QQ_1726542613461](../assets/QQ_1726542613461.png)
 
 在ARM64架构中，启动流程也分为多个阶段，常见的启动模型如下：
 
 1. **ROM阶段**
    - **功能**：从片上ROM中运行，负责启动系统最初的硬件初始化。通常，它会加载下一个阶段的启动加载程序，例如Coreboot或U-Boot SPL（Secondary Program Loader）。
-   
+
 2. **Coreboot/U-Boot SPL / ATF BL2阶段**
    - **功能**：从ROM加载，负责初始化系统内存（如DDR）和其他关键硬件资源。对于某些系统，还会加载ATF（Arm Trusted Firmware）BL2，它处理一些系统安全和电源管理任务。
 
@@ -144,7 +144,7 @@
 
 ## RISC-V Upstream Boot Flow
 
-![QQ_1726542628416](./assets/QQ_1726542628416.png)
+![QQ_1726542628416](../assets/QQ_1726542628416.png)
 
 与ARM64相似，RISC-V的启动流程也遵循多个阶段的模型，以下是RISC-V的启动流程：
 
@@ -163,7 +163,8 @@
 5. **Linux阶段 (S-mode, OS)**
    - **功能**：最终操作系统被加载并进入运行。RISC-V目前主要支持Linux等开源操作系统。
 
-### 关键说明：
+### 关键说明
+
 - **适用平台**：这个流程主要适用于HiFive Unleashed硬件平台，这是目前 (2019.12) 唯一支持Linux的RISC-V开发板。
 - **使用U-Boot作为最后阶段的引导加载程序**：U-Boot是一个通用的引导加载程序，处理操作系统的加载。
 - **OpenSBI**：这是RISC-V的特定组件，负责为引导加载程序和操作系统提供运行时服务。
@@ -172,7 +173,7 @@
 
 ## RISC-V boot flow development timeline
 
-![QQ_1726543733562](./assets/QQ_1726543733562.png)
+![QQ_1726543733562](../assets/QQ_1726543733562.png)
 
 RISC-V启动流程的发展历程 (-2019.12) 展现了该架构的逐步成熟和演变。每个重要的里程碑标志着RISC-V启动流程支持的新功能和特性：
 
@@ -209,19 +210,23 @@ RISC-V启动流程的发展历程 (-2019.12) 展现了该架构的逐步成熟�
 
 SBI（Supervisor Binary Interface）是RISC-V架构中的**管理模式二进制接口**，其作用类似于系统调用接口，允许超级模式（S-mode）的操作系统与机器模式（M-mode）的执行环境（SEE, Supervisor Execution Environment）进行通信。它定义了一组标准化的接口，使得不同的操作系统和平台可以在不重复编写硬件相关代码的情况下，访问底层硬件资源。
 
-<img src="./assets/QQ_1726544136826.png" alt="QQ_1726544136826" style="zoom:50%;" />
+<img src="../assets/QQ_1726544136826.png" alt="QQ_1726544136826" style="zoom:50%;" />
 
-### SEE的定义：
+### SEE的定义
+
 - **M-mode下的运行时固件**：为运行在HS-mode（Hypervisor Supervisor Mode）的操作系统或虚拟机管理器提供运行时服务。
 - **HS-mode下的虚拟机管理器**：为运行在VS-mode（Virtual Supervisor Mode）的客户操作系统提供管理功能。
 
-### SBI的作用：
+### SBI的作用
+
 - **减少平台代码的重复**：通过统一的接口，减少Linux、FreeBSD等操作系统中的平台特定代码，简化操作系统在不同硬件平台上的移植和维护工作。
 - **提供共享驱动程序**：使多个平台可以共享驱动程序，避免为每个平台单独编写。
 - **提供硬件资源访问接口**：SBI允许操作系统直接访问机器模式下（M-mode）的硬件资源。
 
-### 规范和开发进展：
+### 规范和开发进展
+
 SBI的规范由Unix平台规范工作组制定，当前的版本包括：
+
 - **SBI v0.1**：目前 (2019.12) 广泛使用。
 - **SBI v0.2**：正在草案阶段，旨在提供更多功能和更好的性能。
 
@@ -231,13 +236,15 @@ SBI的详细文档和规范可以通过[RISC-V的SBI GitHub项目](https://githu
 
 OpenSBI是RISC-V体系结构中**Supervisor Binary Interface (SBI)** 规范的开源实现。它为机器模式（M-mode）提供运行时服务，是RISC-V启动流程中的关键组件，通常在ROM/LOADER阶段之后使用。OpenSBI通过提供标准化接口，使得上层操作系统可以与硬件进行交互，从而避免了SBI实现的碎片化。
 
-### OpenSBI的主要特性：
+### OpenSBI的主要特性
+
 - **开源实现**：OpenSBI遵循BSD-2条款许可证，由社区维护和开发。它确保SBI的实现一致性，并避免不同平台上SBI实现的差异。
 - **提供运行时服务**：OpenSBI在机器模式（M-mode）下运行，负责为操作系统（通常是在超级模式S-mode下运行）提供必要的服务。
 - **支持参考平台**：OpenSBI为不同平台提供了参考驱动程序，包括PLIC（平台级中断控制器）、CLINT（核心本地中断器）和UART 8250驱动程序等。其他平台可以基于这些通用代码添加自己的平台驱动程序。
 - **社区维护的开源项目**：用户可以通过[OpenSBI的GitHub](https://github.com/riscv/opensbi)获取源代码、文档以及最新的更新。
 
-### OpenSBI的作用：
+### OpenSBI的作用
+
 OpenSBI主要为RISC-V平台提供一个标准化的接口，使操作系统可以高效、安全地与硬件交互。它被设计为可移植和模块化的，使得不同硬件平台可以复用它的核心功能，同时添加各自平台特定的驱动程序。
 
 ## Key Features
@@ -245,6 +252,7 @@ OpenSBI主要为RISC-V平台提供一个标准化的接口，使操作系统可�
 OpenSBI具备以下几个重要的功能特性，确保其能够在广泛的硬件环境中高效运行，并适应不同的使用场景：
 
 ### 分层结构以适应多种用例
+
 - **通用SBI库与平台抽象层**：  
   通用的SBI库实现了平台抽象，通常与外部固件和引导加载程序（如EDK2、Secure Boot工作组实现的UEFI）一起使用。它提供了标准的SBI接口，使得外部引导加载程序可以在不同的平台上稳定运行。
   
@@ -254,10 +262,12 @@ OpenSBI具备以下几个重要的功能特性，确保其能够在广泛的硬�
 - **平台特定的参考固件**：  
   提供三种不同类型的运行时固件，供开发人员参考和使用。它们涵盖了从最基本的引导流程到高级的硬件初始化需求。
 
-<img src="./assets/QQ_1726544377659.png" alt="QQ_1726544377659" style="zoom:50%;" />
+<img src="../assets/QQ_1726544377659.png" alt="QQ_1726544377659" style="zoom:50%;" />
 
 ### 广泛支持的硬件特性
+
 OpenSBI支持多种硬件特性，确保它能够在各种不同的RISC-V系统中运行，包括：
+
 - **支持RV32和RV64**：既支持32位的RISC-V架构，也支持64位架构，使其在不同的硬件平台上都可以使用。
 - **虚拟化支持**：支持Hypervisor模式，允许虚拟机管理程序在硬件上运行多个操作系统实例。
 - **未对齐的加载/存储处理**：处理未对齐的内存访问操作，确保在所有情况下都能正确处理数据。
@@ -292,17 +302,17 @@ OpenSBI支持多种RISC-V平台，包括以下几种：
    ls -l
    ```
 
-   ![QQ_1726544616922](./assets/QQ_1726544616922.png)
-   
+   ![QQ_1726544616922](../assets/QQ_1726544616922.png)
+
    输出结果展示了几个关键文件：
-   
+
    - `linux_Image`：Linux内核镜像文件。
    - `linux_rootfs.img`：根文件系统镜像，用于仿真系统的文件结构和内容。
    - `opensbi`：OpenSBI的二进制文件，提供运行时服务。
    - `qemu-system-riscv64`：QEMU的RISC-V 64位二进制文件，用于虚拟机仿真。
    - `riscv64--glibc--bleeding-edge-2018.11-1`：RISC-V的交叉编译工具链。
    - `u-boot`：U-Boot引导加载程序，用于启动系统。
-   
+
 2. **解压工具链并将其添加到环境路径**  
    下载并解压RISC-V工具链后，需要将其路径添加到系统环境变量中：
 
@@ -387,9 +397,9 @@ qemu-system-riscv64 -M virt -m 256M -nographic \
    该文件实现与平台相关的具体功能，并提供`struct sbi_platform`实例。可以参考`platform/template/platform.c`创建该文件。
 
 ### 额外说明
+
 - 新平台的支持目录`<xyz>`可以放置在OpenSBI源代码外部，但需要确保其路径在编译时正确指定。
   
-
 通过这些步骤，开发者可以为OpenSBI添加对新硬件平台的支持，确保其能够在不同的硬件环境中正常运行。
 
 ## Reference Firmwares
@@ -397,19 +407,24 @@ qemu-system-riscv64 -M virt -m 256M -nographic \
 OpenSBI提供了几种类型的参考固件，每种固件都针对特定的平台需求。不同类型的固件适用于RISC-V启动流程中的不同阶段和使用场景。
 
 ### 1. **FW_PAYLOAD**
-   - **功能**：该固件将下一阶段的引导程序作为负载（payload）进行加载。这是适用于Linux等操作系统的RISC-V硬件上最常用的固件类型。
-   - **默认使用**：在可运行Linux的RISC-V硬件中，FW_PAYLOAD是最常用的参考固件。
+
+- **功能**：该固件将下一阶段的引导程序作为负载（payload）进行加载。这是适用于Linux等操作系统的RISC-V硬件上最常用的固件类型。
+- **默认使用**：在可运行Linux的RISC-V硬件中，FW_PAYLOAD是最常用的参考固件。
 
 ### 2. **FW_JUMP**
-   - **功能**：该固件带有一个固定的跳转地址，用于跳转到下一个引导阶段。这种方式适用于需要手动指定引导地址的场景。
-   - **默认使用**：这是QEMU仿真环境中的默认引导方法。
+
+- **功能**：该固件带有一个固定的跳转地址，用于跳转到下一个引导阶段。这种方式适用于需要手动指定引导地址的场景。
+- **默认使用**：这是QEMU仿真环境中的默认引导方法。
 
 ### 3. **FW_DYNAMIC**
-   - **功能**：该固件通过动态信息来确定下一个引导阶段。这种方式通常用于U-Boot SPL或Coreboot等加载程序，能够根据运行时信息灵活调整引导流程。
-   - **使用场景**：U-Boot SPL和Coreboot等平台使用FW_DYNAMIC来管理引导流程。
+
+- **功能**：该固件通过动态信息来确定下一个引导阶段。这种方式通常用于U-Boot SPL或Coreboot等加载程序，能够根据运行时信息灵活调整引导流程。
+- **使用场景**：U-Boot SPL和Coreboot等平台使用FW_DYNAMIC来管理引导流程。
 
 ### SOC厂商的选择
+
 SOC厂商可以根据自身需求选择适合的固件类型：
+
 - 使用OpenSBI的参考固件作为M-mode的运行时固件。
 - 使用OpenSBI作为库，完全从头构建M-mode运行时固件。
 - 扩展现有的M-mode固件（如U-Boot_M_mode或EDK2），并将OpenSBI作为库来增强功能。
@@ -421,17 +436,21 @@ SOC厂商可以根据自身需求选择适合的固件类型：
 U-Boot（Universal Boot Loader）是嵌入式系统中最常用的通用引导加载程序，广泛用于多个架构和平台。它作为最后阶段的引导加载器，负责加载操作系统并管理底层硬件资源。
 
 ### U-Boot的支持范围
+
 - **支持多种指令集架构（ISA）**：包括x86、ARM、AARCH64、RISC-V、ARC等，使其在不同架构的硬件上都能使用。
 - **支持多种外设接口**：如UART、SPI、I2C、以太网、SD卡、USB等，涵盖了几乎所有常见的嵌入式外设。
 - **支持多种文件系统**：能够从不同的文件系统中加载镜像，包括常见的文件系统格式。
 - **支持多种网络协议**：如TFTP等网络协议，允许从网络中加载操作系统镜像或数据。
 
 ### U-Boot的功能
+
 - **加载镜像**：可以从网络、文件系统、可移动设备等多种介质中加载操作系统镜像。
 - **命令行管理界面**：U-Boot提供了一个简便的命令行接口，用于执行引导命令、配置启动参数以及调试系统。
 
 ### 高度的可定制性
+
 U-Boot具备丰富的定制选项，能够根据实际需求进行裁剪和优化：
+
 - **U-Boot SPL**：这是U-Boot的精简版本，通常作为启动的第一级引导加载器，用于最小化引导时间并加载完整的U-Boot程序。
 - **Falcon模式**：该模式用于加速启动流程，直接加载操作系统，跳过某些不必要的初始化步骤。
 
@@ -485,7 +504,7 @@ cd opensbi; make PLATFORM=qemu/virt; cd ..
 
 ### 4. 在U-Boot命令行引导Linux
 
-![QQ_1726545621270](./assets/QQ_1726545621270.png)
+![QQ_1726545621270](../assets/QQ_1726545621270.png)
 
 启动后，你将进入U-Boot的命令行提示符。在这里，可以通过以下命令引导Linux内核：
 
@@ -520,7 +539,7 @@ cd opensbi; make PLATFORM=qemu/virt; cd ..
 5. **Linux (S-mode, OS)**  
    最终，U-Boot加载并引导Linux操作系统，进入正式的工作环境。
 
-![QQ_1726545799279](./assets/QQ_1726545799279.png)
+![QQ_1726545799279](../assets/QQ_1726545799279.png)
 
 ### 核心要点
 
@@ -577,7 +596,7 @@ ARCH=riscv CROSS_COMPILE=riscv64-linux- make; cd ..
 
 ### 4. 在U-Boot命令行引导Linux
 
-![QQ_1726545913700](./assets/QQ_1726545913700.png)
+![QQ_1726545913700](../assets/QQ_1726545913700.png)
 
 当Qemu成功运行后，您将进入U-Boot的命令行界面。在这里，您需要设置引导参数并引导Linux内核：
 
@@ -599,13 +618,15 @@ ARCH=riscv CROSS_COMPILE=riscv64-linux- make; cd ..
 
 当OpenSBI作为库使用时，它被集成到外部固件的源代码中。通过这种方式，外部固件可以调用OpenSBI的功能，并作为其启动流程的一部分来执行。在这种模式下，必须确保正确的配置和编译环境，使得OpenSBI能够与外部固件无缝集成。
 
-### 核心要点：
+### 核心要点
+
 - **OpenSBI作为外部固件源代码的一部分**：OpenSBI与外部固件紧密集成，外部固件需要调用OpenSBI的API。
 - **必须配置程序堆栈和scratch空间**：为了确保每个HART（硬件线程）的独立运行，外部固件必须为每个HART配置专属的堆栈和scratch空间。
 - **相同的GCC目标选项**：外部固件和OpenSBI的源代码必须使用相同的GCC编译选项，例如`-march`、`-mabi`和`-mcmodel`，以保证兼容性。
 - **EDK2与OpenSBI的集成**：目前 (2019.12)，HPE公司正在推动OpenSBI与EDK2的集成。该集成已经适用于U540和Xilinx VC707 FPGA平台，OpenSBI在EDK2的Pre-EFI Initialization (PEI)阶段作为库来使用。
 
-### EDK2集成的详细说明：
+### EDK2集成的详细说明
+
 - **EDK2 mailing list**上已有集成的OpenSBI内容可供参考。
 - OpenSBI与EDK2构建环境兼容，并作为PEI阶段的一部分使用。这种集成极大增强了OpenSBI与EDK2固件的合作，尤其在高性能嵌入式系统中使用RISC-V的环境下。
 
@@ -613,23 +634,29 @@ ARCH=riscv CROSS_COMPILE=riscv64-linux- make; cd ..
 
 当OpenSBI作为外部固件的库使用时，存在一些必须遵守的限制条件和技术要求，以确保正确的运行。
 
-### 编译选项要求：
+### 编译选项要求
+
 - **相同的GCC目标选项**：必须为外部固件和OpenSBI使用相同的GCC目标编译选项，包括：
   - `-march`：指定RISC-V指令集架构的版本和扩展。
   - `-mabi`：定义应用二进制接口（ABI），确保外部固件与OpenSBI之间的函数调用兼容。
   - `-mcmodel`：指定内存模型，控制生成代码时的内存寻址方式。
 
-### 外部固件必须为每个HART创建独立的堆栈和scratch空间：
+### 外部固件必须为每个HART创建独立的堆栈和scratch空间
+
 - **程序堆栈（Program Stack）**：外部固件需要为每个HART配置一个独立的堆栈，避免不同HART之间的堆栈冲突。
 - **OpenSBI scratch空间**：外部固件必须为每个HART设置OpenSBI的scratch空间，通常是通过`struct sbi_scratch`结构体来实现。
 
-### 使用OpenSBI函数的约束：
+### 使用OpenSBI函数的约束
+
 调用OpenSBI的函数时，外部固件需要遵守以下限制：
+
 1. **MSCRATCH寄存器**：必须为每个调用HART将其MSCRATCH寄存器设置为其专属的OpenSBI scratch空间。
 2. **SP寄存器**：调用HART的栈指针（SP）必须设置为该HART的独立堆栈空间，确保各HART之间不会干扰彼此的堆栈。
 
-### 其他要求：
+### 其他要求
+
 外部固件还必须确保以下条件：
+
 - **中断状态**：在调用`SBI`函数时，必须禁用MSTATUS和MIE寄存器中的中断位，以避免中断干扰函数执行。
 - **sbi_init()的调用**：必须为每个HART在系统启动时或HART热插拔事件中调用`sbi_init()`，以正确初始化。
 - **sbi_trap_handler()的调用**：当发生机器模式（M-mode）中断或陷阱时，必须调用`sbi_trap_handler()`，以确保能够正确处理这些异常情况。
@@ -639,21 +666,25 @@ ARCH=riscv CROSS_COMPILE=riscv64-linux- make; cd ..
 RISC-V启动生态系统正在快速发展，预计在 (2019) 年末之前将实现完整的传统启动流程支持。以下是当前的进展情况：
 
 ### OpenSBI
+
 - **积极开发与维护**：OpenSBI作为RISC-V架构的关键组件之一，正在被持续开发和维护。
 - **版本 0.5 已发布**：最新版本具备更完善的功能和优化。
 - **默认使用**：在多种构建工具中，OpenSBI已经成为默认的BIOS接口，例如Buildroot、Yocto、OpenEmbedded和QEMU BIOS。
 - **镜像可用**：Fedora和Debian的RISC-V系统镜像已经包含了OpenSBI的二进制文件。
 
 ### U-Boot
+
 - **U-Boot-2019.10 发布**：该版本已经完全支持HiFive Unleashed S模式。
 - **支持网络和MMC引导**：该版本支持通过网络和MMC卡引导操作系统。
 - **FIT镜像支持**：U-Boot支持FIT镜像加载，它包含了内核、设备树、RAM盘等多个组件。
 - **EFI支持**：为RISC-V架构提供了EFI支持，进一步增强了启动灵活性。
 
 ### Grub
+
 - **上游支持RISC-V**：Grub已经在上游版本中提供了对RISC-V的支持，能够加载Linux内核。
 
 ### Linux Kernel
+
 - **内核主线支持QEMU引导**：上游Linux内核可以在QEMU中正常启动。
 - **设备树集成**：RISC-V的设备树已经集成在Linux内核中，支持多种硬件配置。
 - **v5.3内核**：Linux 5.3版本可以与OpenSBI和U-Boot配合，在HiFive Unleashed板上正常工作。
@@ -663,44 +694,51 @@ RISC-V启动生态系统正在快速发展，预计在 (2019) 年末之前将实
 未来，RISC-V的启动支持将进一步扩展，目标是构建一个稳定、易用的启动生态系统。以下是未来的启动支持方向：
 
 ### EFI Stub支持
+
 - **Linux内核中的EFI Stub支持**：正在开发中，目标是提供完整的UEFI支持。这将为RISC-V带来企业级的启动环境，确保兼容更多高级功能。
 
 ### U-Boot SPL 支持 HiFive Unleashed
+
 - **HiFive Unleashed的U-Boot SPL支持**：正在开发中，未来可以通过SPL引导HiFive Unleashed板的操作系统。
 
 ### Coreboot中的SMP支持
+
 - **多处理器支持**：Coreboot正在开发对SMP（对称多处理）支持，以便在多核系统中更好地管理硬件资源。
 
 ### EDK2项目上游集成
+
 - **持续进行的EDK2集成**：OpenSBI与EDK2的集成正在逐步上游化，进一步扩展RISC-V的固件支持。
 
 ### Oreboot
+
 - **基于Rust的Coreboot**：Oreboot项目是用Rust编写的Coreboot版本，目标是为RISC-V提供更加安全和可靠的固件解决方案。
 
 ### LinuxBoot和其他引导加载程序
+
 - **LinuxBoot？**：未来可能会为RISC-V提供LinuxBoot的支持，使启动流程更加简化和灵活。
 - **其他引导加载程序？**：随着RISC-V的生态系统不断发展，未来可能会出现更多的引导加载程序，进一步丰富启动选项。
 
 通过这些即将到来的支持，RISC-V的启动流程将变得更加多样化和稳定，为开发者提供更灵活的工具链和启动选项，适应从嵌入式系统到高性能计算的广泛应用场景。
-
-
 
 ## Ongoing Work
 
 为了构建一个稳定且易于使用的RISC-V启动生态系统，当前有多个方面的工作正在进行中。这些工作涵盖了SBI规范的更新、OpenSBI的改进、以及Linux内核的持续开发。
 
 ### SBI Specifications
+
 - **SBI v0.2 规范**：新版SBI v0.2规范正在制定中，将带来更多改进和扩展。
 - **Hart状态管理扩展**：在SBI v0.2中，将引入对Hart（硬件线程）状态管理的扩展，以便更好地控制和管理系统中的各个Hart。
 - **替换旧版SBI扩展**：SBI的遗留扩展将被更现代的功能替代，进一步优化性能和兼容性。
 
 ### OpenSBI
+
 - **通过CPU热插拔实现顺序CPU启动**：改进OpenSBI以支持CPU热插拔，允许系统在运行时动态启动或关闭CPU。
 - **支持其他M-mode引导加载程序**：OpenSBI正在扩展以支持其他机器模式（M-mode）的引导加载程序，例如Coreboot和U-Boot SPL。
 - **虚拟化支持**：当SBI规范发生变化时，OpenSBI将增加对虚拟机管理程序（Hypervisor）的支持。
 - **更多平台支持**：OpenSBI计划扩展支持更多硬件平台，但这些扩展需要额外的硬件支持。
 
 ### Linux Kernel
+
 - **SBI v0.2实现**：SBI v0.2规范的实现正在进行中，补丁正在审查过程中。
 - **EFI stub的支持**：EFI stub正在内核中开发，旨在提供完整的UEFI支持，这对企业级应用至关重要。
 - **替换旧版SBI扩展**：与OpenSBI一样，Linux内核也在逐步替换SBI的遗留扩展。
@@ -712,36 +750,38 @@ RISC-V启动生态系统正在快速发展，预计在 (2019) 年末之前将实
 在RISC-V启动生态系统的开发过程中，多个团队和个人做出了重要贡献。以下是对这些贡献者的感谢：
 
 ### U-Boot
+
 - **Lukas Auler**
 - **Bin Meng**
 - **Anup Patel**
 
 ### Coreboot
+
 - **Ron Minnich**
 - **Jonathan Neuschäfer**
 - **Patrick Rudolph**
 - **Philip Hug**
 
 ### EDK2
+
 - **Abner Chang**
 
 ### 其他贡献者
+
 - 感谢所有为RISC-V启动流程做出贡献的开发者和社区成员，他们的努力推动了整个生态系统的前进。
 
 这些开发者和团队通过持续的贡献，使得RISC-V启动流程更加成熟，进一步推动了开源硬件平台的普及和发展。
 
-### Reference 
+### Reference
 
 - [SBI]( https://github.com/riscv/riscv-sbi-doc )
 - [EDK2](https://edk2.groups.io/g/devel/message/46479?p=,,,20,0,0,0::Created,,riscv,20,2,0,33047245)
-
-
 
 **© 2019 Western Digital Corporation or its affiliates. All rights reserved. 12/19/19**
 
 ---
 
-## More 
+## More
 
 [The future of RISC-V Supervisor Binary Interface(SBI) - Atish Patra - Western Digital](https://www.slideshare.net/slideshow/the-future-of-riscv-supervisor-binary-interfacesbi/130689487)
 

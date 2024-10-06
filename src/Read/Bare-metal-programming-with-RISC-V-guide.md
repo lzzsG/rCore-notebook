@@ -70,31 +70,31 @@ QEMU 虚拟化了虚拟机上的 UART 设备，我们的软件可以访问它。
 
 我们知道 QEMU 将 UART 映射到地址 `0x10000000`（可以在 QEMU 的源代码中查看），这里虚拟化的设备是 `NS16550A`。具体细节不重要：对于本文的目的来说，这意味着如果你从软件中向该地址发送一个 8 位值，它将通过虚拟化的 UART 设备的 `TX` 线路发送出去。实际上，这意味着如果你打开 QEMU 的串行端口，你写入 `0x10000000` 的字符将显示在你的控制台中。
 
-### 将代码整合在一起！
+### 将代码整合在一起
 
 了解了所有这些知识后，我们现在可以编写代码。我们即将构建的 `ELF` 文件会在地址 `0x80000000` 上布局一些指令，这些指令依次将字符 ‘h’、‘e’、‘l’、‘l’ 和 ‘o’ 发送到地址 `0x10000000`。最后，代码会进入一个无限循环（这样 QEMU 不会由于某些奇怪的原因崩溃，并且我们可以检查输出）。
 
 ```assembly
-	.global _start
-	.section .text.bios
+ .global _start
+ .section .text.bios
 
-_start:	addi a0, x0, 0x68
-	li a1, 0x10000000
-	sb a0, (a1) # 'h'
+_start: addi a0, x0, 0x68
+ li a1, 0x10000000
+ sb a0, (a1) # 'h'
 
-	addi a0, x0, 0x65
-	sb a0, (a1) # 'e'
+ addi a0, x0, 0x65
+ sb a0, (a1) # 'e'
 
-	addi a0, x0, 0x6C
-	sb a0, (a1) # 'l'
+ addi a0, x0, 0x6C
+ sb a0, (a1) # 'l'
 
-	addi a0, x0, 0x6C
-	sb a0, (a1) # 'l'
+ addi a0, x0, 0x6C
+ sb a0, (a1) # 'l'
 
-	addi a0, x0, 0x6F
-	sb a0, (a1) # 'o'
+ addi a0, x0, 0x6F
+ sb a0, (a1) # 'o'
 
-loop:	j loop
+loop: j loop
 ```
 
 将此文件保存为 `hello.s`。让我们将这个文件汇编为机器码。在我的情况下（可能也是你的情况），我使用了跨平台的工具链，这意味着我在与目标平台不同的平台上进行开发。具体来说，我在 `x86` 机器上开发此软件，并为 `riscv64` 机器构建。
@@ -133,18 +133,18 @@ riscv64-linux-gnu-objdump -D hello
 Disassembly of section .text:
 
 0000000080000000 <.text>:
-    80000000:	06800513          	li	a0,104
-    80000004:	100005b7          	lui	a1,0x10000
-    80000008:	00a58023          	sb	a0,0(a1) # 0x10000000
-    8000000c:	06500513          	li	a0,101
-    80000010:	00a58023          	sb	a0,0(a1)
-    80000014:	06c00513          	li	a0,108
-    80000018:	00a58023          	sb	a0,0(a1)
-    8000001c:	06c00513          	li	a0,108
-    80000020:	00a58023          	sb	a0,0(a1)
-    80000024:	06f00513          	li	a0,111
-    80000028:	00a58023          	sb	a0,0(a1)
-    8000002c:	0000006f          	j	0x8000002c
+    80000000: 06800513           li a0,104
+    80000004: 100005b7           lui a1,0x10000
+    80000008: 00a58023           sb a0,0(a1) # 0x10000000
+    8000000c: 06500513           li a0,101
+    80000010: 00a58023           sb a0,0(a1)
+    80000014: 06c00513           li a0,108
+    80000018: 00a58023           sb a0,0(a1)
+    8000001c: 06c00513           li a0,108
+    80000020: 00a58023           sb a0,0(a1)
+    80000024: 06f00513           li a0,111
+    80000028: 00a58023           sb a0,0(a1)
+    8000002c: 0000006f           j 0x8000002c
 ```
 
 ### 在 QEMU 上运行“伪 BIOS”
@@ -157,8 +157,8 @@ qemu-system-riscv64 -machine virt -bios hello
 
 要查看 UART 上发生的情况，请点击顶部菜单中的 `View` 按钮并切换到串行端口视图。输出应该如下图所示：
 
-![Bare metal QEMU 'fake BIOS'](./assets/qemu_bare_metal_hello.png.webp)
+![Bare metal QEMU 'fake BIOS'](../assets/qemu_bare_metal_hello.png.webp)
 
-## 我只想运行代码！
+## 我只想运行代码
 
 访问[本文的 GitHub 仓库](https://github.com/popovicu/risc-v-bare-metal-fake-bios)，运行 `make` 命令，它将执行我们上述的所有步骤。然后你可以启动 QEMU。

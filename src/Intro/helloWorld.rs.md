@@ -73,8 +73,6 @@ pub fn getchar() -> u8 {
 }
 ```
 
-
-
 ### 用户程序：`hello_world.rs`
 
 ```rust
@@ -181,28 +179,28 @@ macro_rules! println {
 - **`print!` 和 `println!` 宏**：
   - 这两个宏分别对应打印和带换行符的打印（类似于 `printf` 和 `puts`）。
   - `println!` 使用了 `concat!` 宏将字符串内容与换行符 `\n` 拼接，确保打印后自动换行。
-  - `format_args! `宏会生成 `fmt::Arguments` 类型的对象，用于格式化输出。它将字符串和任何附加的参数转换成一种可以用于输出的可变参数类型，支持 `Write` trait 的实现。
+  - `format_args!`宏会生成 `fmt::Arguments` 类型的对象，用于格式化输出。它将字符串和任何附加的参数转换成一种可以用于输出的可变参数类型，支持 `Write` trait 的实现。
   - 这些宏的作用是简化格式化输出，用户可以像在常规环境中那样使用 `print!` 和 `println!`。
 
-#### 宏展开示例：
+#### 宏展开示例
+
 ```rust
 println!("Hello, world!");
 ```
+
 展开后：
+
 ```rust
 $crate::console::print(format_args!(concat!("Hello, world!", "\n")));
 ```
+
 这会将 `"Hello, world!\n"` 作为参数传递给 `console::print` 函数。
 
 ### 系统调用的封装
 
 在用户态程序中，`write` 和 `read` 函数都是系统调用，它们负责与内核通信，将数据写入或从标准输入读取数据。在这里，通过调用这些封装的系统调用函数实现输入输出功能。
 
-
-
-
-
-##  `write` 系统调用回顾
+## `write` 系统调用回顾
 
 `write()` 函数定义在用户态库中，负责将数据通过系统调用发送到内核：
 
@@ -220,11 +218,10 @@ pub fn sys_write(fd: usize, buffer: &[u8]) -> isize {
 }
 ```
 
-
-
 当 `sys_write` 被调用时，操作系统的内核会处理这个系统调用，并将数据写入到对应的设备（在本例中是标准输出）。
 
 简化的内核流程如下：
+
 1. 内核接收系统调用 `SYSCALL_WRITE` 及其参数。
 2. 内核检查文件描述符 `fd` 是否有效（例如 `1` 对应 `STDOUT`）。
 3. 内核将用户传入的缓冲区地址和长度转换为内核可访问的地址空间。
@@ -240,19 +237,14 @@ pub fn sys_write(fd: usize, buffer: &[u8]) -> isize {
 5. 数据成功输出后，内核返回写入的字节数，用户态函数处理该返回值。
 
 整个流程的核心在于：
-- **`println!` 宏展开** -> 
-- **`print` 调用** -> 
-- **`Stdout.write_fmt()` 处理格式化输出** -> 
-- **`sys_write()` 系统调用** -> 
+
+- **`println!` 宏展开** ->
+- **`print` 调用** ->
+- **`Stdout.write_fmt()` 处理格式化输出** ->
+- **`sys_write()` 系统调用** ->
 - **内核处理标准输出**。
 
 通过这种方式，**rCore** 用户态程序实现了将数据从用户态打印到标准输出的完整流程。
-
-
-
-
-
-
 
 # `Write` trait
 
@@ -274,7 +266,7 @@ impl Write for Stdout {
   - 这个函数接收一个不可变的字符串切片 `&str`，然后将字符串内容转换为字节数组 `s.as_bytes()`，再通过 `write` 函数将字节数组写入标准输出。
   - `STDOUT` 是标准输出文件描述符，通常为 `1`。调用 `write(STDOUT, s.as_bytes())`，这实际发起了对系统调用 `write` 的请求，将数据发送到标准输出设备。
 
-## Required Methods:  `write_str`, Provided Methods: `write_fmt` 
+## Required Methods:  `write_str`, Provided Methods: `write_fmt`
 
 在 Rust 中，`write_fmt` 和 `write_str` 是通过实现 `Write` trait 关联起来的。`write_fmt` 是一个定义在 `core::fmt::Write` trait 中的高层次方法，用于格式化输出，而 `write_str` 是 `Write` trait 的一个低层方法，专门用来处理字符串的写入。
 
@@ -365,8 +357,6 @@ fn write_fmt(mut self: &mut Self, args: Arguments<'_>) -> Result {
 
 `write_fmt` 提供了一个高层次的接口，用于处理复杂的格式化输出，如 `println!` 或 `format!`。如果类型实现了 `write_str`，`write_fmt` 可以通过这个默认实现直接使用。
 
-
-
 ## `write` 函数: `fmt::write`
 
 ```rust
@@ -427,10 +417,12 @@ pub fn write(output: &mut dyn Write, args: Arguments<'_>) -> Result {
 ### 1. **核心功能**
 
 `write` 函数接受两个参数：
+
 - **`output: &mut dyn Write`**：一个实现了 `Write` trait 的动态输出流。例如，它可以是一个 `String`、文件或者标准输出。
 - **`args: Arguments`**：包含格式化的参数，由宏 `format_args!` 生成，描述了需要格式化的字符串和插值的变量。
 
 `write` 函数的工作是：
+
 1. 遍历 `args`，获取格式化的字符串片段和相应的参数。
 2. 对每个片段应用相应的格式规则，将结果写入到 `output` 中。
 3. 最后，将剩余的字符串部分（如果有）写入输出流。
@@ -442,6 +434,7 @@ pub fn write(output: &mut dyn Write, args: Arguments<'_>) -> Result {
 #### 2.1 `Arguments` 结构体
 
 `Arguments` 是 `fmt` 模块中的核心结构体，它包含了：
+
 - **`pieces`**：这是字符串片段数组，表示格式化字符串的静态部分。例如 `"Hello {}!"` 中的 `"Hello "` 和 `"!"` 都属于 `pieces`。
 - **`args`**：这是插值参数数组，表示 `{}` 中需要插入的参数（例如 `"world"`）。它存储每个被格式化的数据项。
 - **`fmt`**：可选的格式化规则，用于指定每个参数如何格式化（例如是否使用十进制、是否填充空格等）。
@@ -449,9 +442,11 @@ pub fn write(output: &mut dyn Write, args: Arguments<'_>) -> Result {
 #### 2.2 `formatter`
 
 `write` 函数创建了一个 `Formatter` 实例来处理实际的输出写入：
+
 ```rust
 let mut formatter = Formatter::new(output);
 ```
+
 `Formatter` 是 Rust 的一个内部结构，用于封装 `Write` 对象并提供与格式化相关的各种功能。它会根据传递的 `Arguments` 和对应的格式规则，调用 `Write` 实现的 `write_str` 方法。
 
 #### 2.3 遍历格式化片段和参数
@@ -460,6 +455,7 @@ let mut formatter = Formatter::new(output);
 
 - **格式化无自定义规则的情况**：
    如果没有自定义格式规则（`args.fmt == None`），它直接遍历每个字符串片段和插值参数，并调用参数的 `fmt` 方法来格式化它们：
+
    ```rust
    for (i, arg) in args.args.iter().enumerate() {
        let piece = unsafe { args.pieces.get_unchecked(i) };
@@ -470,6 +466,7 @@ let mut formatter = Formatter::new(output);
        idx += 1;
    }
    ```
+
    这个代码块执行的步骤：
    1. 使用 `get_unchecked`（不安全地）访问 `pieces` 数组中的字符串片段。
    2. 如果片段非空，调用 `write_str` 方法将其写入 `formatter`。
@@ -477,6 +474,7 @@ let mut formatter = Formatter::new(output);
 
 - **格式化带有自定义规则的情况**：
    如果存在格式化规则（`args.fmt`），则使用这些规则对插值参数进行格式化：
+
    ```rust
    for (i, arg) in fmt.iter().enumerate() {
        let piece = unsafe { args.pieces.get_unchecked(i) };
@@ -487,15 +485,19 @@ let mut formatter = Formatter::new(output);
        idx += 1;
    }
    ```
+
    这部分逻辑基本与上面类似，但在对参数进行格式化时，调用了 `run` 函数来执行格式化规则。
 
 #### 2.4 处理尾随字符串片段
 
 在遍历完 `args.args` 后，可能还有一个尾随的字符串片段没有写入，例如：
+
 ```rust
 Hello {}!
 ```
+
 在处理完 `{}` 的参数后，剩余的 `!` 需要被写入输出。`write` 函数会检查是否还有剩余片段，并调用 `write_str` 将其写入：
+
 ```rust
 if let Some(piece) = args.pieces.get(idx) {
     formatter.buf.write_str(*piece)?;
@@ -509,6 +511,7 @@ if let Some(piece) = args.pieces.get(idx) {
 ### 3. **`write!` 宏**
 
 文档中还提到，使用 `write!` 宏可能更加方便。`write!` 是 Rust 中的另一个宏，提供了简化的语法来进行格式化输出：
+
 ```rust
 use std::fmt::Write;
 
@@ -525,13 +528,9 @@ assert_eq!(output, "Hello world!");
 
 `fmt::write` 函数的作用是将格式化的字符串与参数写入一个实现了 `Write` trait 的输出流。它通过遍历格式化的字符串片段与参数，调用 `write_str` 将每个部分写入输出。最终，它可以完成诸如 `println!`、`write!` 等宏背后的核心工作。在这种设计下，`fmt::write` 实现了高度的灵活性，能够支持多种格式化输出的目标，如 `String`、文件或标准输出。
 
-
-
 </details>
 
-
-
-###  **示例代码解读**
+### **示例代码解读**
 
 文档中的示例展示了如何使用 `fmt::write` 将格式化内容写入到 `String` 中：
 
@@ -544,7 +543,8 @@ fmt::write(&mut output, format_args!("Hello {}!", "world"))
 assert_eq!(output, "Hello world!");
 ```
 
-#### 工作流程：
+#### 工作流程
+
 1. **`format_args!` 宏**：
    - 宏 `format_args!("Hello {}!", "world")` 会生成一个 `Arguments` 结构体，包含 `"Hello "` 和 `"!"` 作为静态字符串片段，以及 `"world"` 作为参数。
 2. **`write_fmt`**
@@ -555,8 +555,6 @@ assert_eq!(output, "Hello world!");
 4. **最终输出**：
    - 最终，`output` 中包含 `"Hello world!"`，这个值被断言验证。
 
-
-
 ## `println!` 宏
 
 ### 标准库中的 `println!` 宏
@@ -564,6 +562,7 @@ assert_eq!(output, "Hello world!");
 在使用 **标准库**（即没有使用 `#![no_std]` 的项目）时，**`println!`** 宏是由标准库自动提供的。它依赖于标准库中已经实现的输入/输出系统和格式化输出机制。
 
 在标准环境下：
+
 - **`println!`** 是由 **`std::fmt`** 模块提供的宏，用户可以直接使用它来向标准输出打印格式化的文本。
 - `println!` 会自动将输出定向到标准输出（如终端），并且它使用了标准库的 **`Write`** trait 和相关的 I/O 设施。
 
@@ -595,6 +594,7 @@ fn main() {
 ### 为什么 `no_std` 需要自己实现 `println!`？
 
 **`no_std`** 环境下没有标准库，意味着：
+
 - 没有标准的 I/O 库，因此没有默认的标准输出设备。
 - 没有标准库中的宏，如 `println!`，所以需要自己定义类似的功能来适应具体的运行环境。
 
@@ -610,10 +610,6 @@ macro_rules! println {
 ```
 
 这个自定义的 `println!` 宏定义了如何将格式化字符串打印到设备上，而不依赖标准库。
-
-
-
-
 
 ## 从 `hello_world.rs` 到`sys_write`
 
@@ -637,7 +633,8 @@ pub fn main() -> i32 {
 
 这个简单的用户态程序使用 **`println!`** 宏来打印 "Hello world from user mode program!"。由于这是一个 **`no_std`** 项目，它不依赖标准库，而是使用 **rCore** 定义的自定义宏和库。
 
-#### 关键点：
+#### 关键点
+
 - **`#![no_std]`**：表示禁用了标准库，不能使用如 `println!` 等标准库宏，必须自己实现。
 - **`#![no_main]`**：没有使用标准的 `main` 函数，而是自定义程序入口。
 - **`println!`**：使用 `println!` 宏进行格式化字符串输出。
@@ -655,7 +652,8 @@ macro_rules! println {
 }
 ```
 
-#### 宏展开解释：
+#### 宏展开解释
+
 - **`println!`** 宏接收一个格式化字符串 `$fmt`，并将它和换行符 `\n` 连接在一起，形成 `"Hello world from user mode program!\n"`。
 - **`format_args!`**：将字符串和任何格式化参数打包成 `fmt::Arguments`，这是 Rust 标准格式化输出的基础。
 - **`$crate::console::print()`**：最终宏会调用 `console::print` 函数，将生成的 `fmt::Arguments` 传递给它。
@@ -686,7 +684,8 @@ impl Write for Stdout {
 }
 ```
 
-#### `Write` trait 工作原理：
+#### `Write` trait 工作原理
+
 - **`write_str`**：将传入的字符串 `s` 转换为字节数组（`as_bytes`），并调用底层的 `write` 函数，将这些字节传递给输出设备。
 - **`write_fmt`**：通过 `write_str` 完成格式化数据的写入，它会逐步将格式化字符串中的每个部分（如 "Hello world" 和 `\n`）输出。
 
@@ -765,7 +764,8 @@ pub fn sys_write(fd: usize, buf: *const u8, len: usize) -> isize {
 }
 ```
 
-#### 内核态处理流程：
+#### 内核态处理流程
+
 1. **参数解析**：从用户态接收传递的参数（文件描述符 `fd`、缓冲区指针 `buf`、数据长度 `len`）。
 2. **权限检查**：检查文件描述符是否有效、文件是否可写。
 3. **数据写入**：将缓冲区中的数据通过内核的文件系统接口写入到对应的输出设备。
